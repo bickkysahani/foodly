@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block masthead %} 
+<header class="masthead bg-primary text-white text-center">
+            
+    <div class="container d-flex align-items-center flex-column" >
+        
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Foodly</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-utensils fa-2x"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading-->
+        
+        
+        <form action="{{ url_for('search_api') }}" method="POST" enctype="multipart/form-data">
+          <div class="input-group input-group-lg masthead-subheading font-weight-light mb-0" style="margin-top: 5%;">
+              <input type="text" name="searchstring" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Search for your favorite recipes" size="50">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </form>
+    </div>
+</header>
+{% endblock %}
+
+
+{% block content %} 
+
+<div class="container">
+
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8"></div>
+        <div class="card " style="background-color: white;">
+            <div class="card-header" >
+              <h1 class="recipe-title text-secondary">{{result.recipeName}}</h1>
+            </div>
+           <img src="{{result.imageUrl}}" class="card-img-top" alt="..."/>
+     
+           <div class="card-body">
+                 <!-- 'Uploaded by' username Subheading-->
+                       <p class="card-text">
+                         <h6 class="text-muted">Uploaded by {{result.username}}</h6>
+                       </p>
+                <!-- Required Ingredients Section-->
+                <ul class="required-ingredients">
+                  <h2 class="section-title text-secondary">Required Ingredients</h2>
+                  {% for d in result.ingredients %}
+                  <li>{{d}}</li>
+                  {% endfor %}
+                </ul>
+               <!-- Cooking Instructions Section-->
+                <ul class="cooking-instructions">
+                <h2 class="section-title text-secondary">Cooking Instructions</h2>
+                  <p style="color: black;">{{result.instructions}}</p>
+           </div>
+     </div>   
+        <div class="col">
+          {% if islogin %}
+          <div class="add-button">
+            <a href="{{ url_for('change_recipe',recipieid=result.id) }}" class="btn btn-primary">Edit</a>
+            <a href="{{ url_for('remove_recipe',recipieid=result.id) }}" class="btn btn-danger">Delete</a>
+        </div>
+        {% endif %}
+          
+        </div>
+    </div>
+
+</div>
+  
+  
+
+
+{% endblock %}
